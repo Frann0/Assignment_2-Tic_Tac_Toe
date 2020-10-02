@@ -64,7 +64,17 @@ public class GameBoardSinglePlayer implements IGameModel {
      * Resets the game to a new game state.
      */
     @Override
-    public void newGame() {
-        //TODO Implement this method
+    public void resetBoard() {
+
+    }
+
+    @Override
+    public void setGrid(int col, int row, String tekst) {
+
+    }
+
+    @Override
+    public void incrementPlayer() {
+
     }
 }

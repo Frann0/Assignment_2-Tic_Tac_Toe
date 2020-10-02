@@ -61,6 +61,7 @@ public class TicTacViewController implements Initializable {
         currentGameMode = choicePlayMode.getSelectionModel().getSelectedItem();
 
         game = GameBoardFactory.getGameModel(currentGameMode);
+        game.resetBoard();
         setPlayer();
     }
 
@@ -74,17 +75,27 @@ public class TicTacViewController implements Initializable {
         try {
             Integer row = GridPane.getRowIndex((Node) event.getSource());
             Integer col = GridPane.getColumnIndex((Node) event.getSource());
+
             int r = (row == null) ? 0 : row;
             int c = (col == null) ? 0 : col;
-            int player = game.getNextPlayer();
+
             if (game.play(c, r)) {
+                int player = game.getNextPlayer();
+                game.incrementPlayer();
                 Button btn = (Button) event.getSource();
                 String xOrO = player == 0 ? "X" : "O";
                 btn.setText(xOrO);
+                game.setGrid(c,r,xOrO);
+                System.out.println(game.isGameOver());
                 if (game.isGameOver()) {
                     int winner = game.getWinner();
                     displayWinner(winner);
-                    scoreModel.setNextWinner(xOrO);
+                    if(winner >= 0){
+                        scoreModel.setNextWinner(xOrO);
+                    } else{
+                        scoreModel.setNextWinner("Draw :(");
+                    }
+                    lstScores.setItems(scoreModel.getWinners());
                 } else {
                     setPlayer();
                 }
@@ -103,11 +114,13 @@ public class TicTacViewController implements Initializable {
     @FXML
     private void handleNewGame(ActionEvent event) {
         if (currentGameMode == choicePlayMode.getSelectionModel().getSelectedItem()) {
-            game.newGame();
+            game.resetBoard();
         } else {
             currentGameMode = choicePlayMode.getSelectionModel().getSelectedItem();
             game = GameBoardFactory.getGameModel(currentGameMode);
         }
+
+        game.resetBoard();
         setPlayer();
         clearBoard();
     }
@@ -129,6 +142,12 @@ public class TicTacViewController implements Initializable {
         switch (winner) {
             case -1:
                 message = "It's a draw :-(";
+                break;
+            case 0:
+                message = "Player 0 Wins";
+                break;
+            case 1:
+                message = "Player 1 Wins";
                 break;
             default:
                 message = "Player " + winner + " wins!!!";

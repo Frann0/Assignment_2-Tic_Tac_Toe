@@ -26,6 +26,7 @@ public interface IGameModel
      *
      * @param col column to place a marker in.
      * @param row row to place a marker in.
+     *
      * @return true if the move is accepted, otherwise false. If gameOver ==
      * true this method will always return false.
      */
@@ -49,5 +50,9 @@ public interface IGameModel
     /**
      * Resets the game to a new game state.
      */
-    void newGame();
+    void resetBoard();
+
+    void setGrid(int col, int row, String tekst);
+
+    void incrementPlayer();
 }

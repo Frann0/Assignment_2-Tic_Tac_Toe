@@ -1,13 +1,20 @@
 package tictactoe.bll;
 
+import java.util.Arrays;
+
 /**
  * The GameBoardTwoPlayer class is the mandatory implementation for the TicTacToe assignment.
  * It is used for games where there are two human players.
  */
 public class GameBoardTwoPlayer implements IGameModel {
+    private int tur;
+    private int tureTilbage;
+    private String[][] grid;
 
     protected GameBoardTwoPlayer() {
-
+        tur = 0;
+        tureTilbage = 9;
+        grid = new String[3][3];
     }
 
     /**
@@ -17,8 +24,15 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public int getNextPlayer() {
-        //TODO Implement this method
-        return 0;
+        return tur % 2;
+    }
+
+    public void incrementPlayer() {
+        if (tur == 0) {
+            tur++;
+        } else {
+            tur = 0;
+        }
     }
 
     /**
@@ -33,8 +47,7 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public boolean play(int col, int row) {
-        //TODO Implement this method
-        return true;
+        return (!isGameOver() && !grid[col][row].matches("[XO]"));
     }
 
     /**
@@ -45,8 +58,44 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public boolean isGameOver() {
-        //TODO Implement this method
-        return false;
+        if (tureTilbage > 0){
+            if (checkXWin() || checkOWin()){
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+    //[0,0 0,1 0,2]
+    //[1,0 1,1 1,2]
+    //[2,0 2,1 2,2]
+
+    public boolean checkXWin() {
+        return ( //Vandret
+                grid[0][0].matches("[X]") && grid[1][0].matches("[X]") && grid[2][0].matches("[X]") ||
+                        grid[0][1].matches("[X]") && grid[1][1].matches("[X]") && grid[2][1].matches("[X]") ||
+                        grid[0][2].matches("[X]") && grid[1][2].matches("[X]") && grid[2][2].matches("[X]") ||
+                        //Lodret
+                        grid[0][0].matches("[X]") && grid[0][1].matches("[X]") && grid[0][2].matches("[X]") ||
+                        grid[1][0].matches("[X]") && grid[1][1].matches("[X]") && grid[1][2].matches("[X]") ||
+                        grid[2][0].matches("[X]") && grid[2][1].matches("[X]") && grid[2][2].matches("[X]") ||
+                        //kryds
+                        grid[0][0].matches("[X]") && grid[1][1].matches("[X]") && grid[2][2].matches("[X]") ||
+                        grid[0][2].matches("[X]") && grid[1][1].matches("[X]") && grid[2][0].matches("[X]"));
+    }
+
+    public boolean checkOWin() {
+        return ( //Vandret
+                grid[0][0].matches("[O]") && grid[1][0].matches("[O]") && grid[2][0].matches("[O]") ||
+                        grid[0][1].matches("[O]") && grid[1][1].matches("[O]") && grid[2][1].matches("[O]") ||
+                        grid[0][2].matches("[O]") && grid[1][2].matches("[O]") && grid[2][2].matches("[O]") ||
+                        //Lodret
+                        grid[0][0].matches("[O]") && grid[0][1].matches("[O]") && grid[0][2].matches("[O]") ||
+                        grid[1][0].matches("[O]") && grid[1][1].matches("[O]") && grid[1][2].matches("[O]") ||
+                        grid[2][0].matches("[O]") && grid[2][1].matches("[O]") && grid[2][2].matches("[O]") ||
+                        //kryds
+                        grid[0][0].matches("[O]") && grid[1][1].matches("[O]") && grid[2][2].matches("[O]") ||
+                        grid[0][2].matches("[O]") && grid[1][1].matches("[O]") && grid[2][0].matches("[O]"));
     }
 
     /**
@@ -56,16 +105,36 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public int getWinner() {
-        //TODO Implement this method
-        return -1;
+        if (checkOWin()){
+            return 1;
+        }else if (checkXWin()){
+            return 0;
+        }else {
+            return -1;
+        }
     }
 
     /**
      * Resets the game to a new game state.
      */
     @Override
-    public void newGame() {
-        //TODO Implement this method
+    public void resetBoard() {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid.length; j++) {
+                grid[i][j] = "";
+            }
+        }
+        tureTilbage = 9;
+        tur = 0;
+        System.out.println(Arrays.deepToString(grid));
+    }
+
+    @Override
+    public void setGrid(int col, int row, String tekst) {
+        tureTilbage--;
+        System.out.println(tureTilbage);
+        grid[col][row] = tekst;
+        System.out.println(Arrays.deepToString(grid));
     }
 
 }
