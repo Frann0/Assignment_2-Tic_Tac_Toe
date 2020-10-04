@@ -35,6 +35,7 @@ public class GameBoardTwoPlayer implements IGameModel {
         }
     }
 
+
     /**
      * Attempts to let the current player play at the given coordinates. It the
      * attempt is successful the current player has ended his turn and it is the

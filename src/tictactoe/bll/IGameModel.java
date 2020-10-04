@@ -55,4 +55,5 @@ public interface IGameModel
     void setGrid(int col, int row, String tekst);
 
     void incrementPlayer();
+
 }

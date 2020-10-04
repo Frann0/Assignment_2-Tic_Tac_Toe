@@ -78,7 +78,6 @@ public class TicTacViewController implements Initializable {
 
             int r = (row == null) ? 0 : row;
             int c = (col == null) ? 0 : col;
-
             if (game.play(c, r)) {
                 int player = game.getNextPlayer();
                 game.incrementPlayer();
@@ -86,12 +85,14 @@ public class TicTacViewController implements Initializable {
                 String xOrO = player == 0 ? "X" : "O";
                 btn.setText(xOrO);
                 game.setGrid(c,r,xOrO);
-                System.out.println(game.isGameOver());
+
                 if (game.isGameOver()) {
                     int winner = game.getWinner();
                     displayWinner(winner);
-                    if(winner >= 0){
-                        scoreModel.setNextWinner(xOrO);
+                    if(winner == 0){
+                        scoreModel.setNextWinner("X");
+                    } else if (winner == 1) {
+                        scoreModel.setNextWinner("O");
                     } else{
                         scoreModel.setNextWinner("Draw :(");
                     }
