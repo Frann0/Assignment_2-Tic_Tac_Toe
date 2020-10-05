@@ -1,6 +1,9 @@
 package tictactoe.bll;
 
+import javafx.scene.control.Button;
+
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -16,6 +19,7 @@ public class GameBoardSinglePlayer implements IGameModel {
         tur = 0;
         tureTilbage = 9;
         grid = new String[3][3];
+
     }
 
     /**
@@ -59,8 +63,8 @@ public class GameBoardSinglePlayer implements IGameModel {
      */
     @Override
     public boolean isGameOver() {
-        if (tureTilbage > 0){
-            if (checkXWin() || checkOWin()){
+        if (tureTilbage > 0) {
+            if (checkXWin() || checkOWin()) {
                 return true;
             }
             return false;
@@ -106,11 +110,11 @@ public class GameBoardSinglePlayer implements IGameModel {
      */
     @Override
     public int getWinner() {
-        if (checkOWin()){
+        if (checkOWin()) {
             return 1;
-        }else if (checkXWin()){
+        } else if (checkXWin()) {
             return 0;
-        }else {
+        } else {
             return -1;
         }
     }
@@ -131,29 +135,36 @@ public class GameBoardSinglePlayer implements IGameModel {
     }
 
     @Override
-    public void setGrid(int col, int row, String tekst) {
+    public void setGrid(int col, int row, String tekst,List nodes) {
         tureTilbage--;
         System.out.println(tureTilbage);
         grid[col][row] = tekst;
         System.out.println(Arrays.deepToString(grid));
-        computerMove();
+        computerMove(nodes);
         System.out.println(Arrays.deepToString(grid));
 
     }
 
-    private void computerMove(){
-        if(!isGameOver()) {
+    private void computerMove(List nodes) {
+        if (!isGameOver()) {
             int col = ThreadLocalRandom.current().nextInt(0, 3);
             int row = ThreadLocalRandom.current().nextInt(0, 3);
             if (play(col, row)) {
                 grid[col][row] = "O";
+                setAIButtonText(col,row,nodes);
                 tureTilbage--;
                 incrementPlayer();
-                System.out.println(tureTilbage);
             } else {
-                computerMove();
+                computerMove(nodes);
             }
         }
     }
+
+    private void setAIButtonText(int col, int row, List nodes) {
+        int index = col + 3 * row;
+        Button test = (Button) nodes.get(index);
+        test.setText("O");
+    }
+
 
 }

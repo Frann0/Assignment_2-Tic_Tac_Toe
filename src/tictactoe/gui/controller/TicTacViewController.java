@@ -19,17 +19,20 @@ import tictactoe.bll.IGameModel;
 import tictactoe.gui.model.ScoreModel;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
  * @author Stegger
  */
+
 public class TicTacViewController implements Initializable {
     @FXML
     private ChoiceBox<GameBoardFactory.GAME_MODE> choicePlayMode;
 
     @FXML
-    private ListView lstScores;
+    private ListView<String> lstScores;
 
     @FXML
     private Label lblPlayer;
@@ -48,6 +51,9 @@ public class TicTacViewController implements Initializable {
     private GameBoardFactory.GAME_MODE currentGameMode;
     private IGameModel game;
     private ScoreModel scoreModel;
+    private List nodes;
+
+
 
     /**
      * Initialize method is called at construction time AFTER the constructor is called, and after all GUI controls are created.
@@ -55,6 +61,8 @@ public class TicTacViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         scoreModel = new ScoreModel();
+        nodes = new ArrayList<Node>();
+        nodes.addAll(gridPane.getChildren());
         lstScores.setItems(scoreModel.getWinners());
         choicePlayMode.getItems().addAll(GameBoardFactory.GAME_MODE.values());
         choicePlayMode.getSelectionModel().selectLast();
@@ -78,13 +86,14 @@ public class TicTacViewController implements Initializable {
 
             int r = (row == null) ? 0 : row;
             int c = (col == null) ? 0 : col;
+
             if (game.play(c, r)) {
                 int player = game.getNextPlayer();
                 game.incrementPlayer();
                 Button btn = (Button) event.getSource();
                 String xOrO = player == 0 ? "X" : "O";
                 btn.setText(xOrO);
-                game.setGrid(c,r,xOrO);
+                game.setGrid(c,r,xOrO,nodes);
 
                 if (game.isGameOver()) {
                     int winner = game.getWinner();
@@ -120,7 +129,6 @@ public class TicTacViewController implements Initializable {
             currentGameMode = choicePlayMode.getSelectionModel().getSelectedItem();
             game = GameBoardFactory.getGameModel(currentGameMode);
         }
-
         game.resetBoard();
         setPlayer();
         clearBoard();
@@ -139,21 +147,12 @@ public class TicTacViewController implements Initializable {
      * @param winner
      */
     private void displayWinner(int winner) {
-        String message = "";
-        switch (winner) {
-            case -1:
-                message = "It's a draw :-(";
-                break;
-            case 0:
-                message = "Player 0 Wins";
-                break;
-            case 1:
-                message = "Player 1 Wins";
-                break;
-            default:
-                message = "Player " + winner + " wins!!!";
-                break;
-        }
+        String message = switch (winner) {
+            case -1 -> "It's a draw :-(";
+            case 0 -> "Player 0 Wins";
+            case 1 -> "Player 1 Wins";
+            default -> "Player " + winner + " wins!!!";
+        };
         lblPlayer.setText(message);
     }
 
@@ -166,5 +165,9 @@ public class TicTacViewController implements Initializable {
             btn.setText("");
         }
     }
+
+
+
+
 
 }

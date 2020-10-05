@@ -1,6 +1,7 @@
 package tictactoe.bll;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * The GameBoardTwoPlayer class is the mandatory implementation for the TicTacToe assignment.
@@ -9,7 +10,7 @@ import java.util.Arrays;
 public class GameBoardTwoPlayer implements IGameModel {
     private int tur;
     private int tureTilbage;
-    private String[][] grid;
+    private final String[][] grid;
 
     protected GameBoardTwoPlayer() {
         tur = 0;
@@ -34,8 +35,7 @@ public class GameBoardTwoPlayer implements IGameModel {
             tur = 0;
         }
     }
-
-
+    
     /**
      * Attempts to let the current player play at the given coordinates. It the
      * attempt is successful the current player has ended his turn and it is the
@@ -55,15 +55,12 @@ public class GameBoardTwoPlayer implements IGameModel {
      * Tells us if the game has ended either by draw or by meeting the winning
      * condition.
      *
-     * @return true if the game is over, else it will retun false.
+     * @return true if the game is over, else it will return false.
      */
     @Override
     public boolean isGameOver() {
         if (tureTilbage > 0){
-            if (checkXWin() || checkOWin()){
-                return true;
-            }
-            return false;
+            return checkXWin() || checkOWin();
         }
         return true;
     }
@@ -131,11 +128,9 @@ public class GameBoardTwoPlayer implements IGameModel {
     }
 
     @Override
-    public void setGrid(int col, int row, String tekst) {
+    public void setGrid(int col, int row, String tekst,List nodes) {
         tureTilbage--;
-        System.out.println(tureTilbage);
         grid[col][row] = tekst;
-        System.out.println(Arrays.deepToString(grid));
     }
 
 }

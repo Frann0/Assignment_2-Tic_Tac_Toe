@@ -1,5 +1,7 @@
 package tictactoe.bll;
 
+import javafx.scene.layout.GridPane;
+
 public class GameBoardFactory {
 
     public static enum GAME_MODE {

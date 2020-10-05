@@ -5,6 +5,8 @@
  */
 package tictactoe.bll;
 
+import java.util.List;
+
 /**
  *
  * @author Stegger
@@ -52,8 +54,9 @@ public interface IGameModel
      */
     void resetBoard();
 
-    void setGrid(int col, int row, String tekst);
+    void setGrid(int col, int row, String tekst, List nodes);
 
     void incrementPlayer();
+
 
 }
