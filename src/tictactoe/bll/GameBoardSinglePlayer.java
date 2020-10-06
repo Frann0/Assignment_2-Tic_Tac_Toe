@@ -30,6 +30,9 @@ public class GameBoardSinglePlayer implements IGameModel {
         return tur % 2;
     }
 
+    /**
+     * Inkrementere vores spiller.
+     */
     public void incrementPlayer() {
         if (tur == 0) {
             tur++;
@@ -69,10 +72,11 @@ public class GameBoardSinglePlayer implements IGameModel {
         }
         return true;
     }
-    //[0,0 0,1 0,2]
-    //[1,0 1,1 1,2]
-    //[2,0 2,1 2,2]
 
+    /**
+     * Checker om X har vundet. Kan helt sikkert gøres på en bedre måde.
+     * @return  Returnere hvor vidt X har vundet eller ej.
+     */
     public boolean checkXWin() {
         return ( //Vandret
                 grid[0][0].matches("[X]") && grid[1][0].matches("[X]") && grid[2][0].matches("[X]") ||
@@ -87,6 +91,10 @@ public class GameBoardSinglePlayer implements IGameModel {
                         grid[0][2].matches("[X]") && grid[1][1].matches("[X]") && grid[2][0].matches("[X]"));
     }
 
+    /**
+     * Checker om O har vundet. Kan helt sikkert gøres på en bedre måde.
+     * @return  Returnere hvor vidt O har vundet eller ej.
+     */
     public boolean checkOWin() {
         return ( //Vandret
                 grid[0][0].matches("[O]") && grid[1][0].matches("[O]") && grid[2][0].matches("[O]") ||
@@ -131,14 +139,30 @@ public class GameBoardSinglePlayer implements IGameModel {
         tur = 0;
     }
 
+    /**
+     * Funktion der sætter et given index i vores grid array til X eller O, I dette tilfælde begge, da computermove
+     * Kaldes, fordi det er singleplayer. Og som sagt kaldes computerMove her, da så snart vi laver et træk, så skal
+     * computeren også.
+     * @param col   Collumn i grid arrayet
+     * @param row   Row i grid arrayet
+     * @param tekst Teksten der skal sættes
+     * @param nodes nodes. bliver primært brugt i singlerplayer moden, for at finde computerens valg af knap.
+     */
     @Override
     public void setGrid(int col, int row, String tekst, List nodes) {
         tureTilbage--;
-        System.out.println(tureTilbage);
         grid[col][row] = tekst;
         computerMove(nodes);
     }
 
+    /**
+     * Funktion som håndtere vores computers træk. Den checker om spillet er slut, hvis ikke den er det
+     * tager vi et random tal mellem 0 og 3(Eksluderet) og checker om det er et validt move, hvis dener, sætter
+     * vi indexet i vores grid array til at være O på det spot der er valgt, sætter knappens tekst til at være O
+     * trækker en tur fra ture tilbage og opdaterer spilleren, så det er Spillerens tur igen. Hvis det ikke er et
+     * validt move, rekursivt, indtil det er et validt move.
+     * @param nodes knap array.
+     */
     private void computerMove(List nodes) {
         if (!isGameOver()) {
             int col = ThreadLocalRandom.current().nextInt(0, 3);
@@ -154,10 +178,17 @@ public class GameBoardSinglePlayer implements IGameModel {
         }
     }
 
+    /**
+     * Fetcher knappen fra vores node arrayliste som har alle knapperne fra vores GridPane
+     * @param col   Colloumn index
+     * @param row   Row Index
+     * @param nodes Liste med knapper fra Gridpane
+     */
     private void setAIButtonText(int col, int row, List nodes) {
+        //Omdanner vores 2d arrays index til et et enkelt tal, som vi kan bruge som normal index.
         int index = col + 3 * row;
-        Button test = (Button) nodes.get(index);
-        test.setText("O");
+        Button btn = (Button) nodes.get(index);
+        btn.setText("O");
     }
 
 

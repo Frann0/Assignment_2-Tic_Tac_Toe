@@ -28,6 +28,9 @@ public class GameBoardTwoPlayer implements IGameModel {
         return tur % 2;
     }
 
+    /**
+     * Inkrementere vores spiller.
+     */
     public void incrementPlayer() {
         if (tur == 0) {
             tur++;
@@ -64,10 +67,11 @@ public class GameBoardTwoPlayer implements IGameModel {
         }
         return true;
     }
-    //[0,0 0,1 0,2]
-    //[1,0 1,1 1,2]
-    //[2,0 2,1 2,2]
 
+    /**
+     * Checker om X har vundet. Kan helt sikkert gøres på en bedre måde.
+     * @return  Returnere hvor vidt X har vundet eller ej.
+     */
     public boolean checkXWin() {
         //Vandret
         return (grid[0][0].matches("[X]") && grid[1][0].matches("[X]") && grid[2][0].matches("[X]") ||
@@ -82,6 +86,10 @@ public class GameBoardTwoPlayer implements IGameModel {
                 grid[0][2].matches("[X]") && grid[1][1].matches("[X]") && grid[2][0].matches("[X]"));
     }
 
+    /**
+     * Checker om O har vundet. Kan helt sikkert gøres på en bedre måde.
+     * @return  Returnere hvor vidt O har vundet eller ej.
+     */
     public boolean checkOWin() {
         return ( //Vandret
                 grid[0][0].matches("[O]") && grid[1][0].matches("[O]") && grid[2][0].matches("[O]") ||
@@ -126,6 +134,15 @@ public class GameBoardTwoPlayer implements IGameModel {
         tur = 0;
     }
 
+    /**
+     * Funktion der sætter et given index i vores grid array til X eller O, I dette tilfælde begge, da computermove
+     * Kaldes, fordi det er singleplayer. Og som sagt kaldes computerMove her, da så snart vi laver et træk, så skal
+     * computeren også.
+     * @param col   Collumn i grid arrayet
+     * @param row   Row i grid arrayet
+     * @param tekst Teksten der skal sættes
+     * @param nodes nodes. bliver primært brugt i singlerplayer moden, for at finde computerens valg af knap.
+     */
     @Override
     public void setGrid(int col, int row, String tekst,List nodes) {
         tureTilbage--;
