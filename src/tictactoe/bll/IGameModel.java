@@ -54,9 +54,17 @@ public interface IGameModel
      */
     void resetBoard();
 
+    /**
+     * Sætter et spot i Grid arrayet, til en tekst.
+     * @param col   Collumn i grid arrayet
+     * @param row   Row i grid arrayet
+     * @param tekst Teksten der skal sættes
+     * @param nodes nodes. bliver primært brugt i singlerplayer moden, for at finde computerens valg af knap.
+     */
     void setGrid(int col, int row, String tekst, List nodes);
 
+    /**
+     * skifter tur.
+     */
     void incrementPlayer();
-
-
 }

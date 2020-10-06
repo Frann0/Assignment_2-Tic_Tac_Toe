@@ -2,7 +2,6 @@ package tictactoe.bll;
 
 import javafx.scene.control.Button;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -13,13 +12,12 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GameBoardSinglePlayer implements IGameModel {
     private int tur;
     private int tureTilbage;
-    private String[][] grid;
+    private final String[][] grid;
 
     protected GameBoardSinglePlayer() {
         tur = 0;
         tureTilbage = 9;
         grid = new String[3][3];
-
     }
 
     /**
@@ -52,7 +50,7 @@ public class GameBoardSinglePlayer implements IGameModel {
      */
     @Override
     public boolean play(int col, int row) {
-        return (!isGameOver() && !grid[col][row].matches("[XO]"));
+        return (!isGameOver() && grid[col][row].matches(""));
     }
 
     /**
@@ -131,18 +129,14 @@ public class GameBoardSinglePlayer implements IGameModel {
         }
         tureTilbage = 9;
         tur = 0;
-        System.out.println(Arrays.deepToString(grid));
     }
 
     @Override
-    public void setGrid(int col, int row, String tekst,List nodes) {
+    public void setGrid(int col, int row, String tekst, List nodes) {
         tureTilbage--;
         System.out.println(tureTilbage);
         grid[col][row] = tekst;
-        System.out.println(Arrays.deepToString(grid));
         computerMove(nodes);
-        System.out.println(Arrays.deepToString(grid));
-
     }
 
     private void computerMove(List nodes) {

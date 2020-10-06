@@ -53,8 +53,6 @@ public class TicTacViewController implements Initializable {
     private ScoreModel scoreModel;
     private List nodes;
 
-
-
     /**
      * Initialize method is called at construction time AFTER the constructor is called, and after all GUI controls are created.
      */
@@ -91,9 +89,9 @@ public class TicTacViewController implements Initializable {
                 int player = game.getNextPlayer();
                 game.incrementPlayer();
                 Button btn = (Button) event.getSource();
-                String xOrO = player == 0 ? "X" : "O";
-                btn.setText(xOrO);
-                game.setGrid(c,r,xOrO,nodes);
+                String XrO = player == 0 ? "X" : "O";
+                btn.setText(XrO);
+                game.setGrid(c,r,XrO,nodes);
 
                 if (game.isGameOver()) {
                     int winner = game.getWinner();
@@ -165,9 +163,4 @@ public class TicTacViewController implements Initializable {
             btn.setText("");
         }
     }
-
-
-
-
-
 }
